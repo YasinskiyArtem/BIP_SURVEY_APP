@@ -1,0 +1,188 @@
+import ShowQR from '@/components/ShowQR';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp';
+
+interface TwoFactorAuthDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onOtpGenerated: () => Promise<void>;
+}
+
+const TwoFactorAuthDialog: React.FC<TwoFactorAuthDialogProps> = ({ open, onClose, onOtpGenerated }) => {
+  const [otpAuthUrl, setOtpAuthUrl] = useState<string>('');
+  const [base32, setBase32] = useState<string>('');
+  const [otp, setOtp] = useState<string>('');
+  const token = localStorage.getItem('authToken');
+
+  const fetchOtpAuthUrl = useCallback(async () => {
+    if (token) {
+      try {
+        const response = await fetch('http://localhost:8000/api/auth/otp/generate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setOtpAuthUrl(data.otpauth_url);
+          setBase32(data.base32);
+        }
+      } catch (error) {
+        console.error('Error fetching OTP:', error);
+      }
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (open) {
+      fetchOtpAuthUrl();
+    }
+  }, [open, fetchOtpAuthUrl]);
+
+  const handleOtpSubmit = async () => {
+    if (token && otp) {
+      try {
+        // Step 1: Verify OTP
+        const verifyResponse = await fetch('http://localhost:8000/api/auth/otp/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`,
+          },
+          body: JSON.stringify({ otp_token: otp }),
+        });
+
+        if (verifyResponse.ok) {
+          // Step 2: Validate OTP Setup in the database
+          await validateOtpSetup();
+          await onOtpGenerated();
+          onClose();
+        }
+      } catch (error) {
+        console.error('Error verifying OTP:', error);
+      }
+    }
+  };
+  const validateOtpSetup = async () => {
+    if (token && otp) {
+      try {
+        const response = await fetch('http://localhost:8000/api/auth/otp/validate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${token}`,
+          },
+          body: JSON.stringify({
+            otp_token: otp, // Отправляем `otp_token` с введенным значением OTP
+          }),
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Failed to validate OTP setup:', errorData);
+          throw new Error('Failed to validate OTP setup');
+        }
+      } catch (error) {
+        console.error('Error validating OTP setup:', error);
+      }
+    }
+  };
+  
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="bg-white dark:bg-gray-900 text-black dark:text-white rounded-lg shadow-lg p-4 max-h-[90vh] w-full max-w-md overflow-y-auto overflow-x-hidden">
+        <DialogHeader>
+          <DialogTitle className="text-gray-800 dark:text-gray-100">
+            Two-Factor Authentication (2FA)
+          </DialogTitle>
+        </DialogHeader>
+        <div className="flex flex-col gap-4 px-2">
+          <h4 className="text-base font-medium text-blue-600 dark:text-blue-300 mb-2">
+            Configuring Google Authenticator or Authy
+          </h4>
+          <ol className="space-y-1 text-sm list-decimal pl-4">
+            <li>Install Google Authenticator (iOS/Android) or Authy (iOS/Android).</li>
+            <li>In the authenticator app, select the &ldquo;+&rdquo; icon.</li>
+            <li>Choose &ldquo;Scan a barcode (QR code)&rdquo; or enter the code manually.</li>
+          </ol>
+
+          {otpAuthUrl && (
+            <div className="my-4 p-4 rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+              <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2 text-center">
+                Scan this QR code with your 2FA app:
+              </h4>
+              <ShowQR otpauth_url={otpAuthUrl} />
+            </div>
+          )}
+
+          <div className="my-4">
+            <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Or Enter Code Into Your App
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
+              SecretKey: <strong>{base32}</strong> (Base32 encoded)
+            </p>
+          </div>
+
+          <div className="my-4">
+            <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Verify Code
+            </h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
+              Please enter the authentication code generated by your app:
+            </p>
+            <InputOTP
+              maxLength={6}
+              value={otp}
+              onChange={(value) => setOtp(value)}
+              className="w-full"
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+                <InputOTPSlot index={1} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+                <InputOTPSlot index={2} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+              </InputOTPGroup>
+              <InputOTPSeparator className="text-black dark:text-white" />
+              <InputOTPGroup>
+                <InputOTPSlot index={3} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+                <InputOTPSlot index={4} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+                <InputOTPSlot index={5} className="bg-gray-100 dark:bg-gray-800 text-black dark:text-white border dark:border-gray-600" />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+        </div>
+        <div className="flex items-center justify-between mt-4 border-t border-gray-200 dark:border-gray-600 pt-4">
+          <div>
+            <Button
+              onClick={onClose}
+              className="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600 transition-all duration-300"
+            >
+              Close
+            </Button>
+          </div>
+          <div>
+            <Button
+              onClick={handleOtpSubmit}
+              className="bg-black dark:bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 dark:hover:bg-red-800 transition-all duration-300"
+            >
+              Verify OTP
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default TwoFactorAuthDialog;
