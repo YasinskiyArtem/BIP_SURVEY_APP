@@ -9,6 +9,7 @@ FROM nginx:stable-alpine
 
 COPY --from=build ./.next/standalone /usr/share/nginx/html
 COPY --from=build ./.next/static /usr/share/nginx/html/_next/static
+#
 #COPY --from=build /dist /usr/share/nginx/html
 COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 3000
