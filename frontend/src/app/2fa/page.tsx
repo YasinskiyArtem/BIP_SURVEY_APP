@@ -3,11 +3,24 @@
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+//новый код 
+import { Suspense } from 'react';
 
+//
 // Динамически импортируем QRCodeCanvas без SSR (Server-Side Rendering)
 const QRCodeCanvas = dynamic(() => import('qrcode.react').then((mod) => mod.QRCodeCanvas), { ssr: false });
 
-export default function TwoFactorAuth() {
+//новый код 
+export default function TwoFactorAuthPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <TwoFactorAuth />
+    </Suspense>
+  );
+}
+//
+
+function TwoFactorAuth() {
   const [otpAuthUrl, setOtpAuthUrl] = useState(''); // Состояние для хранения URL с QR-кодом
   const [otp, setOtp] = useState(''); // Состояние для введенного пользователем OTP
   const [message, setMessage] = useState(''); // Состояние для отображения сообщений об успехе или ошибке
