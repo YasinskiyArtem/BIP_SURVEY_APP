@@ -1,5 +1,4 @@
-  GNU nano 4.8                                                        frontend/Dockerfile                                                                   FROM node:alpine as build
-
+FROM node:alpine as build
 COPY package.json package.json
 RUN npm install
 COPY . .
