@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -65,8 +66,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Разрешает учетные данные (например, куки) в запросах
-#CORS_ALLOW_ORIGIN_REGEXES = [r"^http://localhost:3000$"]  # Замените на нужные источники
-CORS_ALLOW_ORIGIN_REGEXES = [r"^http://213.108.4.83:3000$"]  # Замените на нужные источники
+CORS_ALLOW_ORIGIN_REGEXES = [r"^http://localhost:3000$"]  # Замените на нужные источники
+#CORS_ALLOW_ORIGIN_REGEXES = [r"^http://213.108.4.83:3000$"]  # Замените на нужные источники
 CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
@@ -158,6 +159,8 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+#STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Важно!
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -165,3 +168,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'otp_app.UserModel'
+
+#####################################

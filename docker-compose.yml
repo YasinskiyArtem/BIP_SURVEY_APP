@@ -1,5 +1,6 @@
 networks:
   dev:
+    driver: bridge
 
 services:
   nginx:
@@ -15,14 +16,27 @@ services:
       - frontend
     networks:
       - dev
+
   backend:
     build:
       context: ./backend
+    ports:
+      - "8000:8000"  # Пробрасываем порт для доступа с хоста
     networks:
       - dev
+    environment:
+      - DJANGO_SETTINGS_MODULE=site_project.settings
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./staticfiles:/app/staticfiles
 
   frontend:
     build:
       context: ./frontend
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"  # Для прямого доступа при отладке
     networks:
-      - dev
+      - default
+  # Порт не пробрасываем - доступ через nginx
