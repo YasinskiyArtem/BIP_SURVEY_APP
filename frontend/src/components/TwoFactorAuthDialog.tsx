@@ -24,7 +24,8 @@ const TwoFactorAuthDialog: React.FC<TwoFactorAuthDialogProps> = ({ open, onClose
   const fetchOtpAuthUrl = useCallback(async () => {
     if (token) {
       try {
-        const response = await fetch('http://localhost:8000/api/auth/otp/generate', {
+        //const response = await fetch('http://localhost:8000/api/auth/otp/generate', {
+        const response = await fetch('/api/auth/otp/generate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -53,7 +54,8 @@ const TwoFactorAuthDialog: React.FC<TwoFactorAuthDialogProps> = ({ open, onClose
     if (token && otp) {
       try {
         // Step 1: Verify OTP
-        const verifyResponse = await fetch('http://localhost:8000/api/auth/otp/verify', {
+        //const verifyResponse = await fetch('http://localhost:8000/api/auth/otp/verify', {
+        const verifyResponse = await fetch('/api/auth/otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -76,7 +78,8 @@ const TwoFactorAuthDialog: React.FC<TwoFactorAuthDialogProps> = ({ open, onClose
   const validateOtpSetup = async () => {
     if (token && otp) {
       try {
-        const response = await fetch('http://localhost:8000/api/auth/otp/validate', {
+        //const response = await fetch('http://localhost:8000/api/auth/otp/validate', {
+        const response = await fetch('/api/auth/otp/validate', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

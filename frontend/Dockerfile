@@ -13,17 +13,4 @@ COPY --from=builder /app/.next/static ./.next/static
 #COPY --from=builder /app/public ./public
 
 EXPOSE 3000
-CMD ["node", "server.js"]  # Обратите внимание на изменение пути
-
-
-# Этап сборки
-# Этап сборки
-# Фронтенд/Dockerfile
-#FROM node:18-alpine
-#WORKDIR /app
-#COPY package*.json ./
-#RUN npm install
-#COPY . .
-#RUN npm run build
-#EXPOSE 3000
-#CMD ["npm", "start"] """
+CMD ["node", "server.js"]

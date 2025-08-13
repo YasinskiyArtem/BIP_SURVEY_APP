@@ -58,7 +58,8 @@ const UserProfilePage = () => {
 
   const fetchUserProfile = async (token: string) => {
     try {
-      const response = await fetch('http://localhost:8000/profile/', {
+      //const response = await fetch('http://localhost:8000/profile/', {
+      const response = await fetch('/profile/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -98,7 +99,8 @@ const UserProfilePage = () => {
       try {
         if (profileData?.otp_validate) {
           // Disable 2FA
-          const response = await fetch('http://localhost:8000/api/auth/otp/disable', {
+          //const response = await fetch('http://localhost:8000/api/auth/otp/disable', {
+          const response = await fetch('/api/auth/otp/disable', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -127,7 +129,8 @@ const UserProfilePage = () => {
     try {
       const token = localStorage.getItem('authToken');
       if (token && formData) {
-        const response = await fetch('http://localhost:8000/profile/', {
+        //const response = await fetch('http://localhost:8000/profile/', {
+        const response = await fetch('/profile/', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -162,7 +165,8 @@ const UserProfilePage = () => {
     try {
       const token = localStorage.getItem('authToken');
       if (token) {
-        const response = await fetch('http://localhost:8000/api/auth/logout', {
+        //const response = await fetch('http://localhost:8000/api/auth/logout', {
+        const response = await fetch('/api/auth/logout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -224,7 +228,8 @@ const UserProfilePage = () => {
           </div>
           {profileData.is_superuser && (
             <Button
-              onClick={() => (window.location.href = 'http://localhost:8000/admin')}
+              //onClick={() => (window.location.href = 'http://localhost:8000/admin')}
+              onClick={() => (window.location.href = '/admin')}
               className="bg-black dark:bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-gray-700 dark:hover:bg-yellow-600 transition-all duration-300"
             >
               Go to Admin Panel

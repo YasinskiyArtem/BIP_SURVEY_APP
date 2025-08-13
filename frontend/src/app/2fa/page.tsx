@@ -38,7 +38,8 @@ function TwoFactorAuth() {
   // Функция для запроса QR-кода с сервера
   const fetchOtpAuthUrl = async (userId: string) => {
     try {
-      const response = await fetch('http://localhost:8000/api/auth/otp/generate', {
+      //const response = await fetch('http://localhost:8000/api/auth/otp/generate', {
+      const response = await fetch('/api/auth/otp/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +65,8 @@ function TwoFactorAuth() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/auth/otp/verify', {
+      //const response = await fetch('http://localhost:8000/api/auth/otp/verify', {
+      const response = await fetch('/api/auth/otp/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

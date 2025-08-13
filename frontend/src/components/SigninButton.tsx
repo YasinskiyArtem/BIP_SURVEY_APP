@@ -45,7 +45,8 @@ const SignInButton: React.FC<SignInButtonProps> = ({ text }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      //const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +106,8 @@ const SignInButton: React.FC<SignInButtonProps> = ({ text }) => {
     const token = localStorage.getItem('authToken');
     if (token && otpToken) {
       try {
-        const response = await fetch('http://localhost:8000/api/auth/otp/verify', {
+        //const response = await fetch('http://localhost:8000/api/auth/otp/verify', {
+        const response = await fetch('/api/auth/otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

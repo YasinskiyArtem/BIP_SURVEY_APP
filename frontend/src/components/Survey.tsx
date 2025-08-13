@@ -41,7 +41,8 @@ const Survey: React.FC<SurveyProps> = ({ surveyId }) => {
   useEffect(() => {
     const fetchSurvey = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/survey/${surveyId}/`, {
+        //const response = await fetch(`http://localhost:8000/api/survey/${surveyId}/`, {
+        const response = await fetch(`/api/survey/${surveyId}/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -93,8 +94,8 @@ const Survey: React.FC<SurveyProps> = ({ surveyId }) => {
       }
 
       setIsSubmitting(true);
-
-      const response = await fetch('http://localhost:8000/api/survey/submit', {
+      //const response = await fetch('http://localhost:8000/api/survey/submit', {
+      const response = await fetch('/api/survey/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +128,8 @@ const Survey: React.FC<SurveyProps> = ({ surveyId }) => {
   const fetchSurveyResults = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/api/survey/result/${surveyId}`, {
+      //const response = await fetch(`http://localhost:8000/api/survey/result/${surveyId}`, {
+      const response = await fetch(`/api/survey/result/${surveyId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
