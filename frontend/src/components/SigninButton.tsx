@@ -46,7 +46,7 @@ const SignInButton: React.FC<SignInButtonProps> = ({ text }) => {
     e.preventDefault();
     try {
       //const response = await fetch('http://localhost:8000/api/auth/login', {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const SignInButton: React.FC<SignInButtonProps> = ({ text }) => {
     if (token && otpToken) {
       try {
         //const response = await fetch('http://localhost:8000/api/auth/otp/verify', {
-        const response = await fetch('/api/auth/otp/verify', {
+        const response = await fetch('/api/api/auth/otp/verify', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
