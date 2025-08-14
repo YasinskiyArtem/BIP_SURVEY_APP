@@ -4,13 +4,13 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
-#
-FROM node:18-alpine
+
+FROM nginx:stable-alpine
 WORKDIR /app
-# Копируем ВСЮ standalone-директорию
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-#COPY --from=builder /app/public ./public
+#COPY --from=builder /app/.next /usr/share/nginx/html
+COPY --from=builder /app/out /usr/share/nginx/html
+COPY --from=builder /app/nginx.conf /etc/nginx/conf.d/default.conf
+
 
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["nginx", "-g", "daemon off;" ]

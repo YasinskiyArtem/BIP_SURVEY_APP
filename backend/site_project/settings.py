@@ -62,12 +62,14 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',  # ваш фронтенд на Next.js
     'http://127.0.0.1:3000',  # ваш фронтенд на Next.js
-    'http://213.108.4.83',  # Мой арендованный сервер 
+    'http://213.108.4.83',  # Мой арендованный сервер
     'http://localhost',
+    'http://survey-form.ru',
+    #'www.survey-form.ru',
 ]
 
 CORS_ALLOW_CREDENTIALS = True  # Разрешает учетные данные (например, куки) в запросах
-CORS_ALLOW_ORIGIN_REGEXES = [r"^http://localhost:3000$"]  # Замените на нужные источники
+CORS_ALLOW_ORIGIN_REGEXES = [r"^http://survey-form.ru$"]  # Замените на нужные источники
 #CORS_ALLOW_ORIGIN_REGEXES = [r"^http://213.108.4.83:3000$"]  # Замените на нужные источники
 CORS_ALLOW_HEADERS = [
     'content-type',
