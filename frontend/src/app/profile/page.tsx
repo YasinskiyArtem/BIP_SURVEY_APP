@@ -100,7 +100,7 @@ const UserProfilePage = () => {
         if (profileData?.otp_validate) {
           // Disable 2FA
           //const response = await fetch('http://localhost:8000/api/auth/otp/disable', {
-          const response = await fetch('/api/auth/otp/disable', {
+          const response = await fetch('/api/api/auth/otp/disable', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ const UserProfilePage = () => {
       const token = localStorage.getItem('authToken');
       if (token) {
         //const response = await fetch('http://localhost:8000/api/auth/logout', {
-        const response = await fetch('/api/auth/logout', {
+        const response = await fetch('/api/api/auth/logout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
