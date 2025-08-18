@@ -35,7 +35,7 @@ const UserAccountNav: React.FC<UserAccountNavProps> = ({ user }) => {
         },
         credentials: "include",
       });
-  
+
       if (response.ok) {
         logout(); // Выход из системы
       } else {
@@ -89,4 +89,4 @@ const UserAccountNav: React.FC<UserAccountNavProps> = ({ user }) => {
   );
 };
 
-export default UserAccountNav;
+export default UserAccountNav;              

@@ -59,7 +59,7 @@ const UserProfilePage = () => {
   const fetchUserProfile = async (token: string) => {
     try {
       //const response = await fetch('http://localhost:8000/profile/', {
-      const response = await fetch('/profile/', {
+      const response = await fetch('/api/profile/', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const UserProfilePage = () => {
       const token = localStorage.getItem('authToken');
       if (token && formData) {
         //const response = await fetch('http://localhost:8000/profile/', {
-        const response = await fetch('/profile/', {
+        const response = await fetch('/api/profile/', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

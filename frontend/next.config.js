@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
+/* @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'export',
+    trailingSlash: false,
     distDir: 'out',    // Папка для экспортированных файлов
     reactStrictMode: true,
     images: {
@@ -17,4 +18,4 @@ const nextConfig = {
 };
 
 
-module.exports = nextConfig; // Выносим наружу
+module.exports = nextConfig;
