@@ -38,15 +38,18 @@ services:
     networks:
       - app-network
 
-
   certbot:
     image: certbot/certbot
     container_name: certbot
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    command: certonly --webroot -w /var/www/certbot --force-renewal --email artem1yasinskiy@inbox.ru -d survey-form.ru --agree-tos
+#    command: certonly --webroot -w /var/www/certbot --force-renewal --email artem1yasinskiy@inbox.ru -d survey-form.ru --agree-tos
+    command: certonly --webroot -w /var/www/certbot --email artem1yasinskiy@inbox.ru -d survey-form.ru --agree-tos --non-interactive --keep-until-expiring
 
+networks:
+  app-network:
+    driver: bridge
 networks:
   app-network:
     driver: bridge
