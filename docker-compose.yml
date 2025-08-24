@@ -14,7 +14,7 @@ services:
     image: nginx:stable-alpine
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - static_files:/app/staticfiles
+      - static_files:/app/static
       - static_front:/usr/share/nginx/html
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
@@ -24,7 +24,6 @@ services:
     depends_on:
       - frontend
       - backend
-      #- certbot
     networks:
       - app-network
 
@@ -32,11 +31,11 @@ services:
     build:
       context: ./backend
     volumes:
-      - static_files:/app/staticfiles
+      - static_files:/app/static
     ports:
       - "8000:8000"
     networks:
-      - app-network
+          - app-network
 
   certbot:
     image: certbot/certbot
@@ -47,9 +46,6 @@ services:
 #    command: certonly --webroot -w /var/www/certbot --force-renewal --email artem1yasinskiy@inbox.ru -d survey-form.ru --agree-tos
     command: certonly --webroot -w /var/www/certbot --email artem1yasinskiy@inbox.ru -d survey-form.ru --agree-tos --non-interactive --keep-until-expiring
 
-networks:
-  app-network:
-    driver: bridge
 networks:
   app-network:
     driver: bridge
